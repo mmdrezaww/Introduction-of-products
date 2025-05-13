@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Hero from '@/components/sections/Hero'
 import Navbar from '@/components/layout/Navbar'
+import Features  from "@/components/sections/Features";
 
 export default function Home() {
     return (
@@ -8,9 +9,10 @@ export default function Home() {
             <Head>
                 <title>Product-landing</title>
             </Head>
-            <Navbar />
+            <Navbar/>
             <main className="min-h-screen bg-white pt-16">
                 <Hero />
+                <Features />
             </main>
         </>
     )
