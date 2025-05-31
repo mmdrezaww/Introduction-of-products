@@ -22,7 +22,6 @@ const HeaderSection = () => {
     return (
         <section className="w-full px-4 py-6 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-                {/* اسلایدر در ۲ ستون سمت راست */}
                 <div className="md:col-span-2 w-full h-[250px] md:h-[500px] relative rounded-xl overflow-hidden">
                     <Swiper
                         modules={[Autoplay, Pagination]}
@@ -47,7 +46,6 @@ const HeaderSection = () => {
                     </Swiper>
                 </div>
 
-                {/* دو بنر عمودی در یک ستون */}
                 <div className="flex flex-col gap-4">
                     {bannerImages.map((img, i) => (
                         <div key={i} className="relative w-full h-[120px] md:h-[240px] rounded-xl overflow-hidden">

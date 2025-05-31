@@ -1,9 +1,11 @@
 import Head from 'next/head'
-import Hero from '@/components/sections/Hero'
 import Navbar from '@/components/layout/Navbar'
-import Features from "@/components/sections/Features";
-import FeaturedProducts from "@/components/sections/FeaturedProducts";
-
+import HeaderSection from '@/components/sections/HeaderSection/HeaderSection'
+import Hero from '@/components/sections/Hero'
+import Features from "@/components/sections/Features"
+import FeaturedProducts from "@/components/sections/FeaturedProducts"
+import DiscountBanner from "@/components/DiscountBanner/DiscountBanner";
+import Footer from "@/components/layout/Footer"
 export default function Home() {
     return (
         <>
@@ -13,11 +15,13 @@ export default function Home() {
             </Head>
             <Navbar/>
             <main className="min-h-screen bg-white pt-16">
+                <HeaderSection/>
                 <Hero/>
                 <Features/>
                 <FeaturedProducts/>
+                <DiscountBanner/>
+                <Footer />
             </main>
         </>
     )
 }
-
