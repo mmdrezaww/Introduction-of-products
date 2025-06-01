@@ -1,3 +1,4 @@
+// src/components/sections/FeaturedProducts.tsx
 'use client';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -5,17 +6,29 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { products } from '@/data/products';
+import { useCart } from '@/Context/CartContext';
 
 const FeaturedProducts = () => {
+    const { refreshCart } = useCart();
+
+    const handleAddToCart = async (product: any) => {
+        await fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product),
+        });
+
+        refreshCart();
+    };
+
     return (
         <section className="py-12 px-4 md:px-12">
             <h2 className="text-center text-xl font-bold mb-6">محصولات پر فروش</h2>
-
             <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={20}
                 slidesPerView={1}
-                loop={true}
+                loop
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 pagination={{ clickable: true }}
                 navigation
@@ -39,23 +52,16 @@ const FeaturedProducts = () => {
                                 <h3 className="font-medium text-sm">{product.title}</h3>
                                 <p className="text-xs text-gray-500">{product.price}</p>
                                 <button
-                                    className="mt-1 px-3 py-1 bg-yellow-500 text-white font-medium rounded-md shadow-sm hover:bg-yellow-400 hover:shadow-md transition duration-300">
-                                    مشاهده محصول
+                                    onClick={() => handleAddToCart(product)}
+                                    className="mt-1 px-3 py-1 bg-yellow-500 text-white font-medium rounded-md shadow-sm hover:bg-yellow-400 hover:shadow-md transition duration-300"
+                                >
+                                    اضافه کردن به سبد خرید
                                 </button>
                             </div>
                         </div>
                     </SwiperSlide>
                 ))}
             </Swiper>
-
-            <style jsx global>{`
-                .swiper-pagination-bullets {
-                    bottom: 0px !important;
-                }
-                .swiper-pagination-bullet {
-                    margin: 0 4px !important;
-                }
-            `}</style>
         </section>
     );
 };

@@ -1,57 +1,35 @@
-// src/context/CartContext.tsx
+// src/Context/CartContext.tsx
 'use client';
-import { createContext, useContext, useState, ReactNode } from 'react';
-
-type CartItem = {
-    id: string;
-    title: string;
-    quantity: number;
-    price: number;
-};
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type CartContextType = {
-    items: CartItem[];
-    addItem: (item: CartItem) => void;
-    removeItem: (id: string) => void;
-    clearCart: () => void;
+    count: number;
+    refreshCart: () => void;
 };
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType>({
+    count: 0,
+    refreshCart: () => {},
+});
 
-export const useCart = () => {
-    const context = useContext(CartContext);
-    if (!context) {
-        throw new Error('useCart must be used within a CartProvider');
-    }
-    return context;
-};
+export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+    const [count, setCount] = useState(0);
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useState<CartItem[]>([]);
-
-    const addItem = (item: CartItem) => {
-        setItems((prev) => {
-            const found = prev.find((i) => i.id === item.id);
-            if (found) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-                );
-            }
-            return [...prev, item];
-        });
+    const refreshCart = async () => {
+        const res = await fetch('/api/cart');
+        const data = await res.json();
+        setCount(data.count);
     };
 
-    const removeItem = (id: string) => {
-        setItems((prev) => prev.filter((item) => item.id !== id));
-    };
-
-    const clearCart = () => {
-        setItems([]);
-    };
+    useEffect(() => {
+        refreshCart(); // load on first mount
+    }, []);
 
     return (
-        <CartContext.Provider value={{ items, addItem, removeItem, clearCart }}>
+        <CartContext.Provider value={{ count, refreshCart }}>
             {children}
         </CartContext.Provider>
     );
 };
+
+export const useCart = () => useContext(CartContext);
