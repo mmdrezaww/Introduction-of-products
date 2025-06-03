@@ -8,7 +8,7 @@ import DiscountBanner from "@/components/DiscountBanner/DiscountBanner";
 import Footer from "@/components/layout/Footer"
 export default function Home() {
     return (
-        <>
+        <div dir="rtl">
             <Head>
                 <title>گالری طلا | زیباترین طراحی‌ها</title>
                 <link rel="icon" type="image/png" href="/images/2.webp"/>
@@ -22,6 +22,6 @@ export default function Home() {
                 <DiscountBanner/>
                 <Footer />
             </main>
-        </>
+        </div>
     )
 }
