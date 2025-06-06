@@ -1,35 +1,34 @@
-// src/Context/CartContext.tsx
 'use client';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import {createContext, useContext, useEffect, useState} from 'react';
 
-type CartContextType = {
-    count: number;
-    refreshCart: () => void;
-};
+const CartContext = createContext<any>(null);
 
-const CartContext = createContext<CartContextType>({
-    count: 0,
-    refreshCart: () => {},
-});
-
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+export const CartProvider = ({children}: { children: React.ReactNode }) => {
     const [count, setCount] = useState(0);
 
     const refreshCart = async () => {
-        const res = await fetch('/api/cart');
-        const data = await res.json();
-        setCount(data.count);
+        try {
+            const res = await fetch('/api/cart');
+            const data = await res.json();
+            setCount(data.count);
+        } catch (err) {
+            console.error('Failed to fetch cart count:', err);
+        }
     };
 
     useEffect(() => {
-        refreshCart(); // load on first mount
+        refreshCart(); // Initial load
     }, []);
 
     return (
-        <CartContext.Provider value={{ count, refreshCart }}>
+        <CartContext.Provider value={{count, refreshCart}}>
             {children}
         </CartContext.Provider>
     );
 };
 
-export const useCart = () => useContext(CartContext);
+export const useCart = () => {
+    const ctx = useContext(CartContext);
+    if (!ctx) throw new Error('useCart must be used inside CartProvider');
+    return ctx;
+};
